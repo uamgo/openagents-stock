@@ -48,6 +48,11 @@ logs/
 .DS_Store
 Thumbs.db
 
+# Environment variables
+.env
+*.env
+!env.example
+
 # Project specific
 a_stock/data/cache/*
 a_stock/mods/openagents.mods.workspace.*/files/*
