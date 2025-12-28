@@ -36,11 +36,11 @@ from openagents.models.agent_config import AgentConfig
 
 # Index mapping for natural language
 INDEX_KEYWORDS = {
-    "上证": ["上证", "上海", "沪指", "000001"],
-    "深证": ["深证", "深圳", "深指", "399001"],
-    "科创板": ["科创", "科创板", "000688"],
-    "创业板": ["创业", "创业板", "399006"],
-    "北交所": ["北交", "北交所", "899050"],
+    "上证": ["上证", "上海", "沪指", "上证指数", "000001"],
+    "深证": ["深证", "深圳", "深指", "深证成指", "399001"],
+    "科创板": ["科创", "科创板", "科创50", "000688"],
+    "创业板": ["创业", "创业板", "创业板指", "399006"],
+    "北交所": ["北交", "北交所", "北证", "北证50", "899050"],
 }
 
 
@@ -176,19 +176,26 @@ Available Agents:
         """
         # Detect requested indices
         requested_indices = []
+        content_lower = content.lower()
         
         for index_name, keywords in INDEX_KEYWORDS.items():
             for keyword in keywords:
-                if keyword in content:
+                if keyword.lower() in content_lower:
                     requested_indices.append(index_name)
                     break
         
-        # If no specific index mentioned, query all
-        if not requested_indices:
-            requested_indices = list(INDEX_KEYWORDS.keys())
-        
         # Remove duplicates while preserving order
         requested_indices = list(dict.fromkeys(requested_indices))
+        
+        # If no specific index mentioned, check if user wants general market overview
+        if not requested_indices:
+            # Keywords that indicate user wants all indices
+            general_keywords = ["行情", "市场", "大盘", "今天", "今日", "整体", "所有", "全部"]
+            if any(kw in content for kw in general_keywords):
+                requested_indices = list(INDEX_KEYWORDS.keys())
+            else:
+                # User didn't specify, default to main indices only
+                requested_indices = ["上证", "深证", "创业板"]
         
         # Extract days (default 7)
         days = 7

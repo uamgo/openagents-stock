@@ -14,7 +14,7 @@ Usage:
 import asyncio
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 # Add src to path for development
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / "src"))
@@ -111,9 +111,11 @@ class SummaryAgent(WorkerAgent):
         # Indices performance table
         blocks.append(self._create_indices_table(indices_analysis))
 
-        # Comparison section
+        # Comparison section (only if multiple indices)
         if comparison:
-            blocks.append(self._create_comparison_section(comparison))
+            comparison_section = self._create_comparison_section(comparison)
+            if comparison_section:  # Only add if not None
+                blocks.append(comparison_section)
 
         # Trends section
         if trends:
@@ -181,10 +183,21 @@ class SummaryAgent(WorkerAgent):
             "rows": rows,
         }
 
-    def _create_comparison_section(self, comparison: Dict) -> Dict:
+    def _create_comparison_section(self, comparison: Dict) -> Optional[Dict]:
         """Create comparison section."""
         strongest = comparison.get("strongest", [])
         weakest = comparison.get("weakest", [])
+        
+        # 计算总的指数数量（去重）
+        all_index_names = set()
+        for idx in strongest:
+            all_index_names.add(idx["name"])
+        for idx in weakest:
+            all_index_names.add(idx["name"])
+        
+        # 如果只有 1 个指数，不显示对比部分
+        if len(all_index_names) <= 1:
+            return None
 
         content_lines = []
 

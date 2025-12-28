@@ -54,13 +54,22 @@ echo -e "${GREEN}📝 Starting Summary Agent...${NC}"
 /home/openagent/miniconda3/envs/openagents/bin/python agents/summary_agent.py --host localhost --port 8700 > logs/summary-agent.log 2>&1 &
 echo "   Summary Agent PID: $!"
 
+# Wait for agents to initialize
+sleep 2
+
+# Start WebSocket Proxy
+echo -e "${GREEN}🌐 Starting WebSocket Proxy...${NC}"
+/home/openagent/miniconda3/envs/openagents/bin/python simple_ws_proxy_mcp.py > logs/ws_proxy.log 2>&1 &
+WS_PROXY_PID=$!
+echo "   WebSocket Proxy PID: $WS_PROXY_PID"
+
 echo ""
 echo -e "${GREEN}✅ All services started successfully!${NC}"
 echo ""
 echo "Services:"
 echo "  - Network Server: http://localhost:8700"
 echo "  - MCP Endpoint: http://localhost:8700/mcp"
-echo "  - WebSocket Proxy: ws://localhost:8702 (if running)"
+echo "  - WebSocket Proxy: ws://localhost:8702"
 echo ""
 echo "Check logs:"
 echo "  tail -f logs/network.log"

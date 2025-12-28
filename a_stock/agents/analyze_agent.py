@@ -283,14 +283,28 @@ class AnalyzeAgent(WorkerAgent):
         strongest = []
         weakest = []
         
-        for i, (name, analysis) in enumerate(sorted_indices):
-            if i < 2:  # Top 2
+        # Only compare if we have more than 2 indices
+        if len(sorted_indices) <= 2:
+            # If 2 or fewer indices, just list them
+            for name, analysis in sorted_indices:
                 strongest.append({
                     "name": name,
                     "change_pct": analysis["change_pct"],
                     "sentiment": analysis["sentiment"],
                 })
-            if i >= len(sorted_indices) - 2:  # Bottom 2
+        else:
+            # Top 2 strongest
+            for i in range(min(2, len(sorted_indices))):
+                name, analysis = sorted_indices[i]
+                strongest.append({
+                    "name": name,
+                    "change_pct": analysis["change_pct"],
+                    "sentiment": analysis["sentiment"],
+                })
+            
+            # Bottom 2 weakest (from the end)
+            for i in range(max(0, len(sorted_indices) - 2), len(sorted_indices)):
+                name, analysis = sorted_indices[i]
                 weakest.append({
                     "name": name,
                     "change_pct": analysis["change_pct"],
