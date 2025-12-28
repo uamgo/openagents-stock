@@ -1,0 +1,89 @@
+# Stock Analysis Network Configuration
+# Minimal configuration for stock analysis agents
+
+network:
+  name: "StockAnalysisNetwork"
+  mode: "centralized"
+  node_id: "stock-network-1"
+
+  # Transport configuration
+  transports:
+    - type: "http"
+      config:
+        port: 8700
+        serve_mcp: true
+        serve_studio: true
+    - type: "grpc"
+      config:
+        port: 8600
+        max_message_size: 104857600
+        compression: "gzip"
+
+  manifest_transport: "http"
+  recommended_transport: "grpc"
+
+  # Security configuration
+  encryption_enabled: false
+
+  # Discovery configuration
+  discovery_interval: 10
+  discovery_enabled: true
+
+  # Connection management
+  max_connections: 100
+  connection_timeout: 30.0
+  retry_attempts: 3
+  heartbeat_interval: 60
+  agent_timeout: 180
+
+  # Messaging configuration
+  message_queue_size: 1000
+  message_timeout: 30.0
+  message_routing_enabled: true
+
+  # Agent groups
+  default_agent_group: "guest"
+  requires_password: false
+
+  # Mods - Only essential messaging
+  mods:
+    - name: "openagents.mods.workspace.default"
+      enabled: true
+      config:
+        custom_events_enabled: true
+
+    - name: "openagents.mods.workspace.messaging"
+      enabled: true
+      config:
+        default_channels:
+          - name: "general"
+            description: "General channel for stock analysis"
+        max_file_size: 10485760
+        max_message_history: 10000
+        message_retention_days: 30
+        max_thread_depth: 5
+
+# Network profile
+network_profile:
+  discoverable: true
+  name: "Stock Analysis Network"
+  description: "Network for stock market analysis with real-time data and AI insights"
+  tags:
+    - "stock"
+    - "finance"
+    - "analysis"
+  categories:
+    - "finance"
+  country: "China"
+  required_openagents_version: "0.8.0"
+  capacity: 50
+  authentication:
+    type: "none"
+  host: "0.0.0.0"
+  port: 8700
+
+# Global settings
+log_level: "INFO"
+data_dir: "./data/stock-network"
+runtime_limit: null
+shutdown_timeout: 30

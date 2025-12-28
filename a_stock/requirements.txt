@@ -1,0 +1,9 @@
+# OpenAgents requirements
+openagents>=0.7.4
+
+# Data source
+akshare>=1.12.0
+
+# For LLM-based analysis (optional)
+openai>=1.0.0
+

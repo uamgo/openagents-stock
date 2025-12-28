@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+*.pid
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+a_stock/data/cache/*
+a_stock/mods/openagents.mods.workspace.*/files/*
+!a_stock/mods/openagents.mods.workspace.*/files/.keep
+a_stock/events/*
+!a_stock/events/.keep
+a_stock/network.db
+openagents.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Cursor AI
+.cursorrules
+.cursor/
